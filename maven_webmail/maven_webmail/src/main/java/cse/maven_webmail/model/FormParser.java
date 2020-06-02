@@ -101,7 +101,7 @@ public class FormParser {
                     String item = fi.getString("UTF-8");
 
                     if (fieldName.equals("to")) {
-                        setToAddress(item);
+                        setToAddress(item);  // 200102 LJM - @ 이후의 서버 주소 제거
                     } else if (fieldName.equals("cc")) {
                         setCcAddress(item);
                     } else if (fieldName.equals("subj")) {
