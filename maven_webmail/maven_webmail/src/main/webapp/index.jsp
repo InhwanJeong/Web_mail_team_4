@@ -13,7 +13,7 @@
 
 <%
             if (session.isNew()) {
-                session.setAttribute("host", "127.0.0.1");   // should be modified if you change the POP3 server
+                session.setAttribute("host", "localhost");   // should be modified if you change the POP3 server
                 session.setAttribute("debug", "false");
                 //session.setAttribute("pageno", "1");
                 //session.setMaxInactiveInterval(session.getMaxInactiveInterval() * 2);

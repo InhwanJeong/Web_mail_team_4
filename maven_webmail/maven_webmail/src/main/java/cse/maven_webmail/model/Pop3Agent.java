@@ -149,11 +149,12 @@ public class Pop3Agent {
         Properties props = System.getProperties();
         props.setProperty("mail.pop3.host", host);
         props.setProperty("mail.pop3.user", userid);
-        props.setProperty("mail.pop3.apop.enable", "true");
+        props.setProperty("mail.pop3.apop.enable", "false");
+        props.setProperty("mail.pop3.disablecapa", "true");  // 200102 LJM - added cf. https://javaee.github.io/javamail/docs/api/com/sun/mail/pop3/package-summary.html
         props.setProperty("mail.debug", "true");
 
         Session session = Session.getInstance(props);
-        session.setDebug(false);
+        session.setDebug(true);
 
         try {
             store = session.getStore("pop3");

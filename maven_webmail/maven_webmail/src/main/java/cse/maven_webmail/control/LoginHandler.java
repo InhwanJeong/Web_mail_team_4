@@ -73,7 +73,8 @@ public class LoginHandler extends HttpServlet {
                     out = response.getWriter();
                     session.invalidate();
 //                    response.sendRedirect(homeDirectory);
-                    response.sendRedirect(getServletContext().getInitParameter("HomeDirectory"));
+                    //response.sendRedirect(getServletContext().getInitParameter("HomeDirectory"));
+                    response.sendRedirect("/maven_webmail_war_exploded/");
                     break;
                 default:
                     break;

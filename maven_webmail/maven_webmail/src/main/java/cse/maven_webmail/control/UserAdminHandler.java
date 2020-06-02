@@ -69,7 +69,7 @@ public class UserAdminHandler extends HttpServlet {
         String server = "127.0.0.1";
         int port = 4555;
         try {
-            UserAdminAgent agent = new UserAdminAgent(server, port);
+            UserAdminAgent agent = new UserAdminAgent(server, port, this.getServletContext().getRealPath("."));
             String userid = request.getParameter("id");  // for test
             String password = request.getParameter("password");// for test
             out.println("userid = " + userid + "<br>");
@@ -134,7 +134,7 @@ public class UserAdminHandler extends HttpServlet {
         String server = "127.0.0.1";
         int port = 4555;
         try {
-            UserAdminAgent agent = new UserAdminAgent(server, port);
+            UserAdminAgent agent = new UserAdminAgent(server, port, this.getServletContext().getRealPath("."));
             String[] deleteUserList = request.getParameterValues("selectedUsers");
             agent.deleteUsers(deleteUserList);
             response.sendRedirect("admin_menu.jsp");
