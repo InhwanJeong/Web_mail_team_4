@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib tagdir="/WEB-INF/tags/" prefix="addrtags"%>
 <jsp:useBean id="pop3" scope="page" class="cse.maven_webmail.model.Pop3Agent" />
 <%
             //String pageno = (String) request.getParameter("pageno");
@@ -30,9 +32,8 @@
             <jsp:include page="address_book_sidebar_menu.jsp" />
         </div>
         
-        <div id="main">
-            <%= pop3.getMessageList() %>
-        </div>
+            <addrtags:address_book user="webmail" password="1234"
+                                   schema="db" table="addrbook"/>
         
         <jsp:include page="footer.jsp" />
     </body>
