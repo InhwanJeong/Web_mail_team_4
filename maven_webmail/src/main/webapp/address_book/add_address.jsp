@@ -12,10 +12,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>새로운 주소 추가화면</title>
-        <link type="text/css" rel="stylesheet" href="css/main_style.css" />
+        <link type="text/css" rel="stylesheet" href="../css/main_style.css" />
     </head>
     <body>
-        <jsp:include page="header.jsp" />
+        <jsp:include page="../header.jsp" />
 
         <div id="sidebar">
             <jsp:include page="sidebar_address_previous_menu.jsp" />
@@ -50,6 +50,6 @@
             </form>
         </div>
         
-        <jsp:include page="footer.jsp" />
+        <jsp:include page="../footer.jsp" />
     </body>
 </html>
