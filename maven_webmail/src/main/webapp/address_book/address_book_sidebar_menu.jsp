@@ -16,6 +16,6 @@
                 
         <p> <a href="add_address.jsp"> 주소 추가 </a> </p>
         <p> <a href="delete_address.jsp"> 주소 제거 </a> </p>
-        <p> <a href="main_menu.jsp"> 메인 메뉴 </a> </p>
+        <p> <a href="../main_menu.jsp"> 메인 메뉴 </a> </p>
     </body>
 </html>
