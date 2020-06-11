@@ -21,7 +21,7 @@
                    user="${user}" password="${password}"/>
 
 <sql:query var="rs" dataSource="${dataSrc}">
-    SELECT email, name, phone FROM ${table} where userid ='<%= session.getAttribute("userid") %>'
+    SELECT email, name, phone FROM ${table} where user_id ='<%= session.getAttribute("userid") %>'
 </sql:query>
     
     <table border="1">

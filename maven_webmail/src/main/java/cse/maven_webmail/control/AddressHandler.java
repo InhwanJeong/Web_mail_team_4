@@ -35,18 +35,18 @@ public class AddressHandler extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            HttpSession session = request.getSession();
+            //HttpSession session = request.getSession();
 
             request.setCharacterEncoding("UTF-8");
             int select = Integer.parseInt((String) request.getParameter("menu"));
 
             switch (select) {
                 case CommandType.ADD_ADDRESS_COMMAND:
-                    addAddress(request, response, out);
+                    //addAddress(request, response, out);
                     break;
 
                 case CommandType.DELETE_ADDRESS_COMMAND:
-                    deleteAddress(request, response, out);
+                    //deleteAddress(request, response, out);
                     break;
 
                 default:
@@ -59,13 +59,13 @@ public class AddressHandler extends HttpServlet {
         }
     }
 
-    private void addAddress(HttpServletRequest request, HttpServletResponse response, PrintWriter out) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private void deleteAddress(HttpServletRequest request, HttpServletResponse response, PrintWriter out) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+//    private void addAddress(HttpServletRequest request, HttpServletResponse response, PrintWriter out) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
+//
+//    private void deleteAddress(HttpServletRequest request, HttpServletResponse response, PrintWriter out) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
 }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
