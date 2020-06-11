@@ -48,12 +48,16 @@ public class UserAdminAgent {
     private void initialize() {
         Properties props = new Properties();
         
-        try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream("system.properties"))) {
+        // 프로그램 상대경로로 system.properties 찾아서 가져온다.
+        String dir = this.getClass().getResource("").getPath();        
+        dir += "..\\..\\..\\conf\\system.properties";
+
+        try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(dir))) {
             props.load(bis);
             ROOT_ID = props.getProperty("root_id");
             ROOT_PASSWORD = props.getProperty("root_password");
             ADMIN_ID = props.getProperty("admin_id");
-        } catch (IOException ioe) {
+        } catch (IOException ioe){
             System.out.println("UserAdminAgent: 초기화 실패 - " + ioe.getMessage());
         }
         

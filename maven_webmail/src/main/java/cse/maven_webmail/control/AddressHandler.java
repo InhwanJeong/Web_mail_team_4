@@ -37,26 +37,7 @@ public class AddressHandler extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             //HttpSession session = request.getSession();
 
-            request.setCharacterEncoding("UTF-8");
-            int select = Integer.parseInt((String) request.getParameter("menu"));
-
-            switch (select) {
-                case CommandType.ADD_ADDRESS_COMMAND:
-                    //addAddress(request, response, out);
-                    break;
-
-                case CommandType.DELETE_ADDRESS_COMMAND:
-                    //deleteAddress(request, response, out);
-                    break;
-
-                default:
-                    out.println("없는 메뉴를 선택하셨습니다. 어떻게 이 곳에 들어오셨나요?");
-                    break;
-
-            }
-        } catch (Exception ex) {
-            System.err.println(ex.toString());
-        }
+           
     }
 
 //    private void addAddress(HttpServletRequest request, HttpServletResponse response, PrintWriter out) {
