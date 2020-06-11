@@ -1,0 +1,14 @@
+window_sizes 1800 910 289 1506 766 96
+
+diagrams
+  collaborationdiagram_ref 128002 // address_book
+    1204 612 100 A4 24 0
+  active  collaborationdiagram_ref 128130 // del_address_book_communication_diagram
+    1506 766 100 A4 129 0
+end
+show_stereotypes
+selected collaborationdiagram_ref 128130 // del_address_book_communication_diagram
+open
+  classview_ref 128002 // address_book_class
+end
+end
