@@ -24,7 +24,7 @@
         <div id="main">
             추가로 등록할 주소의 사용자 이름과 이메일 주소, 전화번호를 입력해 주시기 바랍니다. <br> <br>
 
-            <form name="AddUser" action="../AddressAgent.do?userid=<%= session.getAttribute("userid") %>"
+            <form name="AddAddress" action="../Address.do?userid=<%= session.getAttribute("userid") %>&menu=<%= CommandType.ADD_ADDRESS_COMMAND%>"
                   method="POST">
                 <table border="0" align="left">
                     <tr>
