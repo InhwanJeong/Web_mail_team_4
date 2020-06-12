@@ -1,3 +1,5 @@
+package cse.maven_webmail.model;
+
 import java.util.ArrayList;
 import java.util.List;
 import merong.Mail;
