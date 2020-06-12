@@ -12,6 +12,6 @@ public class BookedMailExecutor implements Job {
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         StringBuilder builder = new StringBuilder();
         builder.append(new Date());
-        System.out.println(builder.toString());
+        //System.out.println(builder.toString());
     }
 }

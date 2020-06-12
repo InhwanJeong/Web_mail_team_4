@@ -17,7 +17,7 @@ public class SchedulerServlet extends HttpServlet {
     public SchedulerServlet () {
         try {
             schedulerFactory  = new StdSchedulerFactory();
-            scheduler    = schedulerFactory.getScheduler();
+            scheduler = schedulerFactory.getScheduler();
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -25,7 +25,7 @@ public class SchedulerServlet extends HttpServlet {
 
     public void init() {
         try {
-            JobDetail job1    = new JobDetail("job1", Scheduler.DEFAULT_GROUP, BookedMailExecutor.class);
+            JobDetail job1 = new JobDetail("job1", Scheduler.DEFAULT_GROUP, BookedMailExecutor.class);
             CronTrigger trigger1  = new CronTrigger("job1", Scheduler.DEFAULT_GROUP, "* * * * * ?");
             scheduler.scheduleJob(job1, trigger1);
             scheduler.start();

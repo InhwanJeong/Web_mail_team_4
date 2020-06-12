@@ -40,7 +40,7 @@
                     </tr>
                     <tr>
                         <td> 메일 예약 </td>
-                        <td style="text-align: start"> <input type="checkbox" name="booked"> <input type="date" name="subdate" size="80"  >  <input type="time" name="subtime" size="80"  >  </td>
+                        <td style="text-align: start"> <input type="date" name="subdate" size="80"  >  <input type="time" name="subtime" size="80"  >  </td>
                     </tr>
                     <tr>
                         <td> 메일 제목 </td>

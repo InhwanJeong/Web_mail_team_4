@@ -14,7 +14,6 @@ public class CommandType {
     public final static int DELETE_USER_MENU = 4;
 
     public final static int SEND_MAIL_COMMAND = 21;
-    public final static int BOOK_MAIL_COMMAND = 22;
     public final static int DELETE_MAIL_COMMAND = 41;
     public final static int DOWNLOAD_COMMAND = 51;
     

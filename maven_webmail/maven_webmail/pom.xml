@@ -37,6 +37,13 @@
             <scope>compile</scope>
         </dependency>
 
+        <!-- To SSH tunneling -->
+        <dependency>
+            <groupId>com.jcraft</groupId>
+            <artifactId>jsch</artifactId>
+            <version>0.1.55</version>
+        </dependency>
+
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>

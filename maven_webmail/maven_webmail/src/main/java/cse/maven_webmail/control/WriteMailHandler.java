@@ -4,8 +4,7 @@
  */
 package cse.maven_webmail.control;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.sql.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,17 +17,17 @@ import cse.maven_webmail.model.FormParser;
 import cse.maven_webmail.model.SmtpAgent;
 
 /**
- *
  * @author jongmin
  */
 public class WriteMailHandler extends HttpServlet {
 
-    /** 
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
+     *
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -54,12 +53,6 @@ public class WriteMailHandler extends HttpServlet {
 //                    out.flush();
                     break;
 
-                case CommandType.BOOK_MAIL_COMMAND:
-                    out = response.getWriter();
-                    boolean bookStatus = bookMessage(request);
-                    out.print(getMailTransportPopUp(bookStatus));
-                    break;
-
                 default:
                     out = response.getWriter();
                     out.println("없는 메뉴를 선택하셨습니다. 어떻게 이 곳에 들어오셨나요?");
@@ -72,48 +65,9 @@ public class WriteMailHandler extends HttpServlet {
         }
     }
 
-    private boolean bookMessage(HttpServletRequest request){
+    private boolean bookMessage(HttpServletRequest request) {
         boolean status = false;
 
-        String JdbcDriver = "com.mysql.cj.jdbc.Driver";
-        String JdbcUrl = "jdbc:mysql://localhost:3306/webmail?serverTimezone=Asia/Seoul";
-        String User = "jdbctester";
-        String Password = "1234";
-
-        try {
-            Class.forName(JdbcDriver);
-            Connection connection = DriverManager.getConnection(JdbcUrl, User, Password);
-            Statement stmt = connection.createStatement();
-
-            // 1. toAddress, ccAddress, subject, body, file1 정보를 파싱하여 추출
-            FormParser parser = new FormParser(request);
-            parser.parse();
-
-            // 2.  request 객체에서 HttpSession 객체 얻기
-            HttpSession session = (HttpSession) request.getSession();
-
-            // 3. HttpSession 객체에서 메일 서버, 메일 사용자 ID 정보 얻기
-            String host = (String) session.getAttribute("host");
-            String userid = (String) session.getAttribute("userid");
-
-            // 4. 메일 관련 정보 가져오기
-            String to = parser.getToAddress();
-            String cc = parser.getCcAddress();
-            String subj = parser.getSubject();
-            String body = parser.getBody();
-            String fileName = parser.getFileName();
-
-            String sql = "select * from bookmail";
-            ResultSet rs = stmt.executeQuery(sql);
-            // 5. 메일 전송 권한 위임
-            if (stmt.executeQuery(sql) != null) {
-                status = true;
-            }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
 
         return status;
     }
@@ -131,23 +85,73 @@ public class WriteMailHandler extends HttpServlet {
         // 3. HttpSession 객체에서 메일 서버, 메일 사용자 ID 정보 얻기
         String host = (String) session.getAttribute("host");
         String userid = (String) session.getAttribute("userid");
-
-        // 4. SmtpAgent 객체에 메일 관련 정보 설정
-        SmtpAgent agent = new SmtpAgent(host, userid);
-        agent.setTo(parser.getToAddress());
-        agent.setCc(parser.getCcAddress());
-        agent.setSubj(parser.getSubject());
-        agent.setBody(parser.getBody());
         String fileName = parser.getFileName();
-        System.out.println("WriteMailHandler.sendMessage() : fileName = " + fileName);
-        if (fileName != null) {
-            agent.setFile1(fileName);
+
+        if (parser.getBookDate() != "" || parser.getBookTime() != "") { //예약된 메일일 경우
+            System.out.println("예약메일로 들어옴!!!!!!!!!!!!!!");
+            SSHConnector sshConnector = new SSHConnector();
+            sshConnector.tunneling();
+            String JdbcDriver = "com.mysql.cj.jdbc.Driver";
+            String JdbcUrl = "jdbc:mysql://localhost:1234/webmail?serverTimezone=Asia/Seoul";
+            String User = "jdbc";
+            String Password = "1234";
+
+            try {
+                InputStream fileStream = null;
+                int fileLength = 0;
+                //connect DB
+                Class.forName(JdbcDriver);
+                Connection connection = DriverManager.getConnection(JdbcUrl, User, Password);
+                String sql = "insert into booked_mail (host, userid, toAddress, ccAddress, subj, body, fileName, file, bookTime) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+                if(fileName != null){
+                    //open file
+                    File file = new File(fileName);
+                    fileStream = new FileInputStream(file);
+                    fileLength = (int) file.length();
+                }
+
+                //make pstmt
+                PreparedStatement pstmt = connection.prepareStatement(sql);
+                pstmt.setString(1, host);
+                pstmt.setString(2, userid);
+                pstmt.setString(3, parser.getToAddress());
+                pstmt.setString(4, parser.getCcAddress());
+                pstmt.setString(5, parser.getSubject());
+                pstmt.setString(6, parser.getBody());
+                pstmt.setString(7, parser.getFileName());
+                pstmt.setBinaryStream(8, fileStream, fileLength);
+                pstmt.setString(9, parser.getBookDateTime());
+
+                int rs = pstmt.executeUpdate();
+                if (rs == 1) {
+                    status = true;
+                }
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        } else {    //예약된 메일이 아닐경우
+            // 4. SmtpAgent 객체에 메일 관련 정보 설정
+            SmtpAgent agent = new SmtpAgent(host, userid);
+            agent.setTo(parser.getToAddress());
+            agent.setCc(parser.getCcAddress());
+            agent.setSubj(parser.getSubject());
+            agent.setBody(parser.getBody());
+            System.out.println("WriteMailHandler.sendMessage() : fileName = " + fileName);
+            if (fileName != null) {
+                agent.setFile1(fileName);
+            }
+
+            // 5. 메일 전송 권한 위임
+            if (agent.sendMessage()) {
+                status = true;
+            }
         }
 
-        // 5. 메일 전송 권한 위임
-        if (agent.sendMessage()) {
-            status = true;
-        }
         return status;
     }  // sendMessage()
 
@@ -179,12 +183,14 @@ public class WriteMailHandler extends HttpServlet {
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
     /**
      * Handles the HTTP <code>GET</code> method.
-     * @param request servlet request
+     *
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -194,12 +200,13 @@ public class WriteMailHandler extends HttpServlet {
 
     }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
+     *
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -209,8 +216,9 @@ public class WriteMailHandler extends HttpServlet {
 
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override
