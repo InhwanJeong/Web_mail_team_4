@@ -26,7 +26,7 @@ public class SchedulerServlet extends HttpServlet {
     public void init() {
         try {
             JobDetail job1 = new JobDetail("job1", Scheduler.DEFAULT_GROUP, BookedMailExecutor.class);
-            CronTrigger trigger1  = new CronTrigger("job1", Scheduler.DEFAULT_GROUP, "* * * * * ?");
+            CronTrigger trigger1  = new CronTrigger("job1", Scheduler.DEFAULT_GROUP, "0 0/1 * * * ?");
             scheduler.scheduleJob(job1, trigger1);
             scheduler.start();
         } catch (Exception e) {

@@ -53,7 +53,26 @@ public class FormParser {
     }
 
     public String getBookDateTime(){
-        return this.bookDate + " " + this.bookTime;
+        String eBookDate;
+        String eBookTime;
+        if(this.bookDate.equals("")){
+            Date form = new Date();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            eBookDate = format.format(form);
+        }
+        else{
+            eBookDate = this.bookDate;
+        }
+
+        if(this.bookTime.equals("")){
+            Date form = new Date();
+            SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+            eBookTime = format.format(form);
+        }
+        else{
+            eBookTime = this.bookTime;
+        }
+        return eBookDate + " " + eBookTime;
     }
 
     public String getBody() {

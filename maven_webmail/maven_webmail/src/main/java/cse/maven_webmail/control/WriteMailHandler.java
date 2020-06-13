@@ -65,13 +65,6 @@ public class WriteMailHandler extends HttpServlet {
         }
     }
 
-    private boolean bookMessage(HttpServletRequest request) {
-        boolean status = false;
-
-
-        return status;
-    }
-
     private boolean sendMessage(HttpServletRequest request) {
         boolean status = false;
 
@@ -87,8 +80,7 @@ public class WriteMailHandler extends HttpServlet {
         String userid = (String) session.getAttribute("userid");
         String fileName = parser.getFileName();
 
-        if (parser.getBookDate() != "" || parser.getBookTime() != "") { //예약된 메일일 경우
-            System.out.println("예약메일로 들어옴!!!!!!!!!!!!!!");
+        if (!parser.getBookDate().equals("") || !parser.getBookTime().equals("")) { //예약된 메일일 경우
             SSHConnector sshConnector = new SSHConnector();
             sshConnector.tunneling();
             String JdbcDriver = "com.mysql.cj.jdbc.Driver";
@@ -123,9 +115,10 @@ public class WriteMailHandler extends HttpServlet {
                 pstmt.setBinaryStream(8, fileStream, fileLength);
                 pstmt.setString(9, parser.getBookDateTime());
 
-                int rs = pstmt.executeUpdate();
-                if (rs == 1) {
+                if (pstmt.executeUpdate() >= 1) {
                     status = true;
+                    sshConnector.closeSession();
+                    connection.close();
                 }
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();

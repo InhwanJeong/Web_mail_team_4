@@ -5,6 +5,8 @@
  */
 package cse.maven_webmail.model;
 
+import cse.maven_webmail.control.SSHConnector;
+
 import java.util.Properties;
 import javax.mail.FetchProfile;
 import javax.mail.Flags;
@@ -26,6 +28,7 @@ public class Pop3Agent {
     private Store store;
 
     private String exceptionType;
+
 
     public Pop3Agent() {
     }

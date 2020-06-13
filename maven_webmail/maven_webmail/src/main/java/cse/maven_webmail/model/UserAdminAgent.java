@@ -4,6 +4,8 @@
  */
 package cse.maven_webmail.model;
 
+import cse.maven_webmail.control.SSHConnector;
+
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
