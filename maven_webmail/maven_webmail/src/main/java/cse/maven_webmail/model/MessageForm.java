@@ -1,6 +1,6 @@
 package cse.maven_webmail.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class MessageForm {
     private String toAddress;
@@ -9,14 +9,16 @@ public class MessageForm {
     private String sentDate;
     private String subject;
     private String body;
+    private String fileName;
 
-    public MessageForm(ArrayList<String> message){
-        this.toAddress = message.get(0);
-        this.fromAddress = message.get(1);
+    public MessageForm(List<String> message){
+        this.fromAddress = message.get(0);
+        this.toAddress = message.get(1);
         this.ccAddress = message.get(2);
         this.sentDate = message.get(3);
         this.subject = message.get(4);
         this.body = message.get(5);
+        this.fileName = message.get(6);
     }
 
     public String getToAddress() {
@@ -41,5 +43,9 @@ public class MessageForm {
 
     public String getBody() {
         return body;
+    }
+
+    public String getFileName() {
+        return fileName;
     }
 }
