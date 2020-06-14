@@ -36,7 +36,7 @@
             <c:forEach var="row" items="${rs.rows}">
                 <tr>
                     <td>${row.name}</td>
-                    <td>${row.email}</td>
+                    <td><a href="../write_mail.jsp?recv=${row.email}">${row.email}</td>
                     <td>${row.phone}</td>
                 </tr>
             </c:forEach>
