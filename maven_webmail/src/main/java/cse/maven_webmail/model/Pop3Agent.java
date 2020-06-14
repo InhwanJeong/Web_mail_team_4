@@ -5,6 +5,8 @@
  */
 package cse.maven_webmail.model;
 
+import cse.maven_webmail.control.SSHConnector;
+
 import java.util.Properties;
 import javax.mail.FetchProfile;
 import javax.mail.Flags;
@@ -26,6 +28,7 @@ public class Pop3Agent {
     private Store store;
 
     private String exceptionType;
+
 
     public Pop3Agent() {
     }
@@ -149,8 +152,9 @@ public class Pop3Agent {
         Properties props = System.getProperties();
         props.setProperty("mail.pop3.host", host);
         props.setProperty("mail.pop3.user", userid);
-        props.setProperty("mail.pop3.apop.enable", "true");
-        props.setProperty("mail.debug", "true");
+        props.setProperty("mail.pop3.apop.enable", "false");
+        props.setProperty("mail.pop3.disablecapa", "true");  // 200102 LJM - added cf. https://javaee.github.io/javamail/docs/api/com/sun/mail/pop3/package-summary.html
+        props.setProperty("mail.debug", "false");
 
         Session session = Session.getInstance(props);
         session.setDebug(false);

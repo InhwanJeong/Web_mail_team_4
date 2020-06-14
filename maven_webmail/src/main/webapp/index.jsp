@@ -39,7 +39,6 @@
                 <p> <a href="user_sign_form.jsp"> 회원가입 </a> </p>
                 <input type="submit" value="로그인" name="B1">&nbsp;&nbsp;&nbsp;
                 <input type="reset" value="다시 입력" name="B2">
-                
             </form>
         </div>
 

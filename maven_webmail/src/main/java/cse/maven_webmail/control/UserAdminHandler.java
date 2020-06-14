@@ -55,6 +55,10 @@ public class UserAdminHandler extends HttpServlet {
                         deleteUser(request, response, out);
                         break;
 
+                    case CommandType.CHANGE_PW_COMMAND:
+                        checkUser(request, response, out);
+                        break;
+
                     default:
                         out.println("없는 메뉴를 선택하셨습니다. 어떻게 이 곳에 들어오셨나요?");
                         break;
@@ -142,6 +146,105 @@ public class UserAdminHandler extends HttpServlet {
             System.out.println(" UserAdminHandler.deleteUser : exception = " + ex);
         }
     }
+
+    private void checkUser (HttpServletRequest request, HttpServletResponse response, PrintWriter out) {
+        String server = "127.0.0.1";
+        int port = 4555;
+        try {
+            UserAdminAgent agent = new UserAdminAgent(server, port, this.getServletContext().getRealPath("."));
+            String checkId = request.getParameter("id");
+            String changePw = request.getParameter("changePw");
+            boolean check = false;
+
+            for (String userId : agent.getUserList()) {
+                //TODO: 여기출력 지울것
+                System.out.println(userId);
+                if (userId.equals(checkId)) {
+                    check = true;
+                    System.out.println("check ok");
+                    break;
+                }
+            }
+            if(check) {
+                if(changePw(checkId, changePw)){ //암호 변경 성공
+                    out.println(getChangePasswordSuccessPopUp());
+                } else { //암호 변경 실패
+                    out.println(getChangePasswordFailPopUp());
+                }
+            } else { //유효하지 않은 사용자
+                out.println(getNoUserPopUp());
+            }
+        } catch (Exception ex) {
+            out.println("시스템 접속에 실패했습니다.");
+        }
+    }
+
+    private boolean changePw (String id, String password) {
+        String server = "127.0.0.1";
+        int port = 4555;
+        boolean result = false;
+
+        try {
+            UserAdminAgent agent = new UserAdminAgent(server, port, this.getServletContext().getRealPath("."));
+            String checkId = id;
+            String changePw = password;
+
+            result = agent.changePassword(checkId, changePw); //암호 변경
+
+        } catch (Exception ex) {
+            System.out.println(" UserAdminHandler.changePw : exception = " + ex);
+        }
+        return result;
+    }
+
+    private String getChangePasswordSuccessPopUp() {
+        String alertMessage = "사용자 암호 변경을 성공했습니다.";
+        String titleMessage = "암호 변경 결과";
+        String path = "admin_menu.jsp";
+        String successPopup = setPopup(titleMessage, alertMessage, path);
+
+        return successPopup;
+    }
+
+    private String getChangePasswordFailPopUp() {
+        String alertMessage = "사용자 암호 변경에 실패했습니다.";
+        String titleMessage = "암호 변경 결과";
+        String path = "admin_menu.jsp";
+        String failPopup = setPopup(titleMessage, alertMessage, path);
+
+        return failPopup;
+    }
+
+    private String getNoUserPopUp() {
+        String alertMessage = "입력한 사용자 ID가 존재하지 않습니다.";
+        String titleMessage = "사용자 ID 확인 결과";
+        String path = "changePW_user.jsp";
+        String noUserPopup = setPopup(titleMessage, alertMessage, path);
+
+        return noUserPopup;
+    }
+
+    private String setPopup (String title, String alertMessage, String path) {
+        StringBuilder PopUp = new StringBuilder();
+
+        PopUp.append("<html>");
+        PopUp.append("<head>");
+        PopUp.append("<title>").append(title).append("</title>");
+        PopUp.append("<link type=\"text/css\" rel=\"stylesheet\" href=\"css/main_style.css\" />");
+        PopUp.append("</head>");
+        PopUp.append("<body onload=\"goMainMenu()\">");
+        PopUp.append("<script type=\"text/javascript\">");
+        PopUp.append("function goMainMenu() {");
+        PopUp.append("alert(\"");
+        PopUp.append(alertMessage);
+        PopUp.append("\"); ");
+        PopUp.append("window.location = \"").append(path).append("\"; ");
+        PopUp.append("}  </script>");
+        PopUp.append("</body></html>");
+
+        return PopUp.toString();
+    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 
     /**

@@ -5,9 +5,12 @@
 package cse.maven_webmail.model;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -25,10 +28,51 @@ public class FormParser {
     private String subject = null;
     private String body = null;
     private String fileName = null;
+    private String bookDate = null;
+    private String bookTime = null;
     private final String uploadTargetDir = "C:/temp/upload";
 
     public FormParser(HttpServletRequest request) {
         this.request = request;
+    }
+
+    public String getBookDate() {
+        return bookDate;
+    }
+
+    public void setBookDate(String bookDate) {
+        this.bookDate = bookDate;
+    }
+
+    public String getBookTime() {
+        return bookTime;
+    }
+
+    public void setBookTime(String bookTime) {
+        this.bookTime = bookTime;
+    }
+
+    public String getBookDateTime(){
+        String eBookDate;
+        String eBookTime;
+        if(this.bookDate.equals("")){
+            Date form = new Date();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            eBookDate = format.format(form);
+        }
+        else{
+            eBookDate = this.bookDate;
+        }
+
+        if(this.bookTime.equals("")){
+            Date form = new Date();
+            SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+            eBookTime = format.format(form);
+        }
+        else{
+            eBookTime = this.bookTime;
+        }
+        return eBookDate + " " + eBookTime;
     }
 
     public String getBody() {
@@ -101,13 +145,17 @@ public class FormParser {
                     String item = fi.getString("UTF-8");
 
                     if (fieldName.equals("to")) {
-                        setToAddress(item);
+                        setToAddress(item);  // 200102 LJM - @ 이후의 서버 주소 제거
                     } else if (fieldName.equals("cc")) {
                         setCcAddress(item);
                     } else if (fieldName.equals("subj")) {
                         setSubject(item);
                     } else if (fieldName.equals("body")) {
                         setBody(item);
+                    } else if (fieldName.equals("subdate")) {
+                        setBookDate(item);
+                    } else if (fieldName.equals("subtime")) {
+                        setBookTime(item);
                     }
                 } else {  // 6. 첨부 파일 처리
                     if (!(fi.getName() == null || fi.getName().equals(""))) {
