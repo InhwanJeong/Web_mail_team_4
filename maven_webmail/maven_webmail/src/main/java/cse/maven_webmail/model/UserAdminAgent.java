@@ -294,4 +294,39 @@ public class UserAdminAgent {
             return status;
         }
     }
+
+    public boolean changePassword (String userId, String changePw) {
+        byte[] messageBuffer = new byte[1024];
+        boolean status = false;
+
+        if (!isConnected) {
+            return status;
+        }
+
+        try {
+            // 1. setpassword 명령 송신
+            String changeCommand = "setpassword " + userId + " " + changePw + EOL;
+            os.write(changeCommand.getBytes());
+            System.out.println(changeCommand);
+
+            // 2: 응답 메시지 수신
+            java.util.Arrays.fill(messageBuffer, (byte) 0);
+            is.read(messageBuffer);
+            //System.out.println("susin ok");
+
+            // 3. 응답 메시지 분석
+            String recvMessage = new String(messageBuffer);
+            System.out.println(recvMessage);
+            if (recvMessage.contains("reset")) {
+                status = true;
+            }
+            // 4. 연결 종료
+            quit();
+        } catch (Exception ex) {
+            System.err.println(ex);
+        } finally {
+            // 5. 상태 반환
+            return status;
+        }
+    } // changePassword()
 }
