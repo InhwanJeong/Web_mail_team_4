@@ -21,7 +21,7 @@
                    user="${user}" password="${password}"/>
 
 <sql:query var="rs" dataSource="${dataSrc}">
-    SELECT email, name, phone FROM ${table}
+    SELECT email, name, phone FROM ${table} where user_id ='<%= session.getAttribute("userid") %>'
 </sql:query>
     
     <table border="1">
@@ -36,7 +36,7 @@
             <c:forEach var="row" items="${rs.rows}">
                 <tr>
                     <td>${row.name}</td>
-                    <td>${row.email}</td>
+                    <td><a href="../write_mail.jsp?recv=${row.email}@<%= session.getAttribute("host")%>">${row.email}</td>
                     <td>${row.phone}</td>
                 </tr>
             </c:forEach>

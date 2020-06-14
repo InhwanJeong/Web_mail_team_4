@@ -30,6 +30,10 @@
         <servlet-name>UserAddHandler</servlet-name>
         <servlet-class>cse.maven_webmail.control.UserAddHandler</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddressHandler</servlet-name>
+        <servlet-class>cse.maven_webmail.control.AddressHandler</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginHandler</servlet-name>
         <url-pattern>/Login.do</url-pattern>
@@ -49,6 +53,10 @@
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddressHandler</servlet-name>
+        <url-pattern>/Address.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

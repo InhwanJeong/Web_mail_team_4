@@ -12,32 +12,32 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>새로운 주소 추가화면</title>
-        <link type="text/css" rel="stylesheet" href="css/main_style.css" />
+        <link type="text/css" rel="stylesheet" href="../css/main_style.css" />
     </head>
     <body>
-        <jsp:include page="header.jsp" />
+        <jsp:include page="../header.jsp" />
 
         <div id="sidebar">
-            <jsp:include page="sidebar_address_previous_menu.jsp" />
+            <jsp:include page="../sidebar_address_previous_menu.jsp" />
         </div>
 
         <div id="main">
             추가로 등록할 주소의 사용자 이름과 이메일 주소, 전화번호를 입력해 주시기 바랍니다. <br> <br>
 
-            <form name="AddUser" action="UserAdmin.do?menu=<%= CommandType.ADD_USER_COMMAND%>"
+            <form name="AddAddress" action="../Address.do?userid=<%= session.getAttribute("userid") %>&menu=<%= CommandType.ADD_ADDRESS_COMMAND%>"
                   method="POST">
                 <table border="0" align="left">
                     <tr>
                         <td>이름</td>
-                        <td> <input type="text" name="id" value="" size="20" />  </td>
+                        <td> <input type="text" name="name" value="" size="20" />  </td>
                     </tr>
                     <tr>
                         <td>이메일주소 </td>
-                        <td> <input type="password" name="password" value="" /> </td>
+                        <td> <input type="text" name="email" value="" /> </td>
                     </tr>
                     <tr>
                         <td>전화번호 </td>
-                        <td> <input type="password" name="password" value="" /> </td>
+                        <td> <input type="text" name="phone" value="" /> </td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -50,6 +50,6 @@
             </form>
         </div>
         
-        <jsp:include page="footer.jsp" />
+        <jsp:include page="../footer.jsp" />
     </body>
 </html>

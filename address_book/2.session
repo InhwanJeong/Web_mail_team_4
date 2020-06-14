@@ -1,0 +1,14 @@
+window_sizes 1800 910 289 1506 768 96
+
+diagrams
+  active  classdiagram_ref 134658 // Address_book_class_diagram
+    1506 768 100 A4 0 0
+end
+show_stereotypes
+selected operation_ref 129154 // getAddressDelFailurePopUp
+open
+  class_ref 128130 // AddressAgent
+  class_ref 128258 // AddressHandler
+  class_ref 128770 // AddressForm
+end
+end
