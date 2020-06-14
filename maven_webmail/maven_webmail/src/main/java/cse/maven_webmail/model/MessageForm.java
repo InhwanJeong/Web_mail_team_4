@@ -2,12 +2,13 @@ package cse.maven_webmail.model;
 
 import java.util.List;
 
-public class MessageForm {
+public class MessageForm implements Comparable<MessageForm>{
     private String fromAddress;
     private String sentDate;
     private String subject;
     private String body;
     private String fileName;
+    private String index;
 
     public MessageForm(List<String> message){
         this.fromAddress = message.get(0);
@@ -15,6 +16,7 @@ public class MessageForm {
         this.sentDate = message.get(2);
         this.body = message.get(3);
         this.fileName = message.get(4);
+        this.index = message.get(5);
     }
 
     public String getFromAddress() {
@@ -35,5 +37,14 @@ public class MessageForm {
 
     public String getFileName() {
         return fileName;
+    }
+
+    @Override
+    public int compareTo(MessageForm o) {
+        return 0;
+    }
+
+    public String getIndex() {
+        return index;
     }
 }

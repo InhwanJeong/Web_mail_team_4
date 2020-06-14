@@ -117,6 +117,7 @@ public class Pop3Agent extends HttpServlet {
 
         } catch (Exception ex) {
             System.out.println("Pop3Agent.getMessageList() : exception = " + ex);
+            ex.printStackTrace();
             result = "Pop3Agent.getMessageList() : exception = " + ex;
             return result;
         }
