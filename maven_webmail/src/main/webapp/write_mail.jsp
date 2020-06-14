@@ -39,6 +39,10 @@
                         <td> <input type="text" name="cc" size="80">  </td>
                     </tr>
                     <tr>
+                        <td> 메일 예약 </td>
+                        <td style="text-align: start"> <input type="date" name="subdate" size="80"  >  <input type="time" name="subtime" size="80"  >  </td>
+                    </tr>
+                    <tr>
                         <td> 메일 제목 </td>
                         <td> <input type="text" name="subj" size="80"  >  </td>
                     </tr>

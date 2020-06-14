@@ -5,7 +5,12 @@
 package cse.maven_webmail.model;
 
 import com.sun.mail.smtp.SMTPMessage;
+import cse.maven_webmail.control.SSHConnector;
+
 import java.io.File;
+import java.io.InputStream;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Properties;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -18,6 +23,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.MimeUtility;
+import javax.mail.util.ByteArrayDataSource;
 
 /**
  *
@@ -32,6 +38,8 @@ public class SmtpAgent {
     protected String subj = null;
     protected String body = null;
     protected String file1 = null;
+    protected String file2 = null;
+    protected InputStream file = null;
 
     public SmtpAgent(String host, String userid) {
         this.host = host;
@@ -94,6 +102,22 @@ public class SmtpAgent {
         this.file1 = file1;
     }
 
+    public String getFile2() {
+        return file2;
+    }
+
+    public void setFile2(String file2) {
+        this.file2 = file2;
+    }
+
+    public InputStream getFile() {
+        return file;
+    }
+
+    public void setFile(InputStream file) {
+        this.file = file;
+    }
+
     // LJM 100418 -  현재 로그인한 사용자의 이메일 주소를 반영하도록 수정되어야 함. - test only
     // LJM 100419 - 일반 웹 서버와의 SMTP 동작시 setFrom() 함수 사용 필요함.
     //              없을 경우 메일 전송이 송신주소가 없어서 걸러짐.
@@ -112,7 +136,8 @@ public class SmtpAgent {
         try {
             SMTPMessage msg = new SMTPMessage(session);
 
-            msg.setFrom(new InternetAddress(this.userid + "@" + this.host));
+            // msg.setFrom(new InternetAddress(this.userid + "@" + this.host));
+            msg.setFrom(new InternetAddress(this.userid));  // 200102 LJM - 테스트 목적으로 수정
             //msg.setFrom(new InternetAddress("jongmin@deu.ac.kr"));
 
 
@@ -120,7 +145,7 @@ public class SmtpAgent {
             if (this.to.indexOf(';') != -1) {
                 this.to = this.to.replaceAll(";", ",");
             }
-            msg.setRecipients(Message.RecipientType.TO, this.to);
+            msg.setRecipients(Message.RecipientType.TO, this.to);  // 200102 LJM - 수정
 //            msg.setRecipients(Message.RecipientType.TO, new String("지니<genie@localhost>"));
 
 //            if (!getCc().equals("")) {
@@ -161,6 +186,18 @@ public class SmtpAgent {
                 a1.setDataHandler(new DataHandler(src));
                 int index = this.file1.lastIndexOf('/');
                 String fileName = this.file1.substring(index + 1);
+                // "B": base64, "Q": quoted-printable
+                a1.setFileName(MimeUtility.encodeText(fileName, "UTF-8", "B"));
+                mp.addBodyPart(a1);
+            }
+
+            // 예약 메일 전송 시 파일 추가
+            if (this.file2 != null) {
+                MimeBodyPart a1 = new MimeBodyPart();
+                DataSource src = new ByteArrayDataSource(this.file, "application/octet-stream");
+                a1.setDataHandler(new DataHandler(src));
+                int index = this.file2.lastIndexOf('/');
+                String fileName = this.file2.substring(index + 1);
                 // "B": base64, "Q": quoted-printable
                 a1.setFileName(MimeUtility.encodeText(fileName, "UTF-8", "B"));
                 mp.addBodyPart(a1);
