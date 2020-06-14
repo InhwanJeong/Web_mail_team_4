@@ -12,12 +12,14 @@ import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.Session;
 import javax.mail.Store;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
  * @author jongmin
  */
-public class Pop3Agent {
+public class Pop3Agent extends HttpServlet {
 
     private String host;
     private String userid;
@@ -83,8 +85,10 @@ public class Pop3Agent {
     /*
      * 페이지 단위로 메일 목록을 보여주어야 함.
      */
-    public String getMessageList() {
+    public String getMessageList(String status, String keyword) {
         String result = "";
+        if (status == null) status = "";
+        if (keyword == null) keyword = "";
         Message[] messages = null;
 
         if (!connectToStore()) {  // 3.1
@@ -105,7 +109,7 @@ public class Pop3Agent {
             folder.fetch(messages, fp);
 
             MessageFormatter formatter = new MessageFormatter(userid);  //3.5
-            result = formatter.getMessageTable(messages);   // 3.6
+            result = formatter.getMessageTable(messages, status, keyword);   // 3.6
 
             folder.close(true);  // 3.7
             store.close();       // 3.8

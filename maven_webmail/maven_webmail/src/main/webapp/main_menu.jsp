@@ -28,13 +28,24 @@
 
     <body>
         <jsp:include page="header.jsp" />
+        <script language="javascript" type="text/javascript">
+            function getFilteredMessageList(){
+                var e = document.getElementById("status");
+                var selectedStatus = e.options[e.selectedIndex].value;
+                var enterKeyword = document.getElementById("keyword").value;
+
+                window.location.replace("/main_menu.jsp?status="
+                    +selectedStatus+"&keyword"+enterKeyword);
+            }
+        </script>
+
 
         <div id="sidebar">
             <jsp:include page="sidebar_menu.jsp" />
         </div>
 
-        <form action="<%=pop3.getMessageList()%>">
-            <label for="status">Filtering By </label>
+        <form name="filterForm" onsubmit="getFilteredMessageList()">
+            <label>Filtering By </label>
             <select id="status" name="status">
                 <option value="None" selected>필터링 X</option>
                 <option value="fromAddress">발신인</option>
@@ -45,12 +56,19 @@
                 <option value="fileName">파일 이름</option>
             </select>
 
-            <input type="text" value="" placeholder="Enter Keyword!!"  name="keyword"/>
+            <input type="text" id="keyword" value="" placeholder="Enter Keyword!!"  name="keyword"/>
             <input type="submit">
         </form>
 
+
+
+
         <div id="main">
-            <%= pop3.getMessageList() %>
+            <%
+                String status = request.getParameter("status");
+                String keyword = request.getParameter("keyword");
+                pop3.getMessageList(status, keyword);
+            %>
         </div>
 
         <jsp:include page="footer.jsp" />

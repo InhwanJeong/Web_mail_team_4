@@ -28,7 +28,7 @@ public class MessageFormatter {
         this.userid = userid;
     }
 
-    public String getMessageTable(Message[] messages) {
+    public String getMessageTable(Message[] messages, String status, String keyword) {
         StringBuilder buffer = new StringBuilder();
         List<String> messageList = new ArrayList<>();
         List<MessageForm> messageForms = new ArrayList<>();
@@ -60,7 +60,7 @@ public class MessageFormatter {
         }
 
 
-        List<MessageForm> filteredMessage = filteringMessage(messageForms, "FromAddress", "yong");
+        List<MessageForm> filteredMessage = filteringMessage(messageForms, status, keyword);
 
         int index = 0;
         for (MessageForm message : filteredMessage) {

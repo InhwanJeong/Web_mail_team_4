@@ -37,6 +37,7 @@
         <servlet-name>ReadMailHandler</servlet-name>
         <url-pattern>/ReadMail.do</url-pattern>
     </servlet-mapping>
+
     <session-config>
         <session-timeout>
             30
