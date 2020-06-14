@@ -26,6 +26,10 @@
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <servlet>
+        <servlet-name>UserAddHandler</servlet-name>
+        <servlet-class>cse.maven_webmail.control.UserAddHandler</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginHandler</servlet-name>
         <url-pattern>/Login.do</url-pattern>
@@ -75,6 +79,10 @@
     <servlet-mapping>
         <servlet-name>QuartzInitializer</servlet-name>
         <url-pattern>/QuartzInitializer.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserAddHandler</servlet-name>
+        <url-pattern>/UserAddhandler.do</url-pattern>
     </servlet-mapping>
 
     <!-- quartz run -->
