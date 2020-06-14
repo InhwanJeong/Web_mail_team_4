@@ -30,11 +30,13 @@ public class UserAdminAgent {
     private String ROOT_PASSWORD;  // = "root";
     private String ADMIN_ID; //  = "admin";
     private final String EOL = "\r\n";
+    String cwd;
 
-    public UserAdminAgent(String server, int port) throws Exception {
+    public UserAdminAgent(String server, int port, String cwd) throws Exception {
         System.out.println("UserAdminAgent created: server = " + server + ", port = " + port);
         this.server = server;  // 127.0.0.1
         this.port = port;  // 4555
+        this.cwd = cwd;
         
         initialize();
 
@@ -47,12 +49,18 @@ public class UserAdminAgent {
     
     private void initialize() {
         Properties props = new Properties();
+        String propertyFile =  this.cwd + "/WEB-INF/classes/config/system.properties";
+        propertyFile = propertyFile.replace("\\", "/");
+        System.out.printf("prop path = %s%n", propertyFile);
         
-        try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream("system.properties"))) {
+        try (BufferedInputStream bis = 
+                new BufferedInputStream(
+                        new FileInputStream(propertyFile))) {
             props.load(bis);
             ROOT_ID = props.getProperty("root_id");
             ROOT_PASSWORD = props.getProperty("root_password");
             ADMIN_ID = props.getProperty("admin_id");
+            System.out.printf("ROOT_ID = %s\nROOT_PASS = %s\n", ROOT_ID, ROOT_PASSWORD);
         } catch (IOException ioe) {
             System.out.println("UserAdminAgent: 초기화 실패 - " + ioe.getMessage());
         }
@@ -190,41 +198,6 @@ public class UserAdminAgent {
             return status;
         }
     }  // deleteUsers()
-    
-    public boolean changePassword (String userId, String changePw) {
-        byte[] messageBuffer = new byte[1024];
-        boolean status = false;
-
-        if (!isConnected) {
-            return status;
-        }
-
-        try {
-            // 1. setpassword 명령 송신
-            String changeCommand = "setpassword " + userId + " " + changePw + EOL;
-            os.write(changeCommand.getBytes());
-            System.out.println(changeCommand);
-            
-            // 2: 응답 메시지 수신
-            java.util.Arrays.fill(messageBuffer, (byte) 0);
-            is.read(messageBuffer);
-            //System.out.println("susin ok");
-            
-            // 3. 응답 메시지 분석
-            String recvMessage = new String(messageBuffer);
-            System.out.println(recvMessage);
-            if (recvMessage.contains("reset")) {
-                status = true;
-            }
-            // 4. 연결 종료
-            quit();
-        } catch (Exception ex) {
-            System.err.println(ex);
-        } finally {
-            // 5. 상태 반환
-            return status;
-        }
-    } // changePassword()
 
     public boolean verify(String userid) {
         boolean status = false;
