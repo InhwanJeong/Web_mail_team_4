@@ -92,9 +92,9 @@ public class AddressHandler extends HttpServlet {
             // if (addUser successful)  사용자 등록 성공 팦업창
             // else 사용자 등록 실패 팝업창
             if (agent.delAddress()) {
-                out.println(getAddressRegistrationSuccessPopUp());
+                out.println(getAddressDeletionSuccessPopUp());
             } else {
-                out.println(getAddressRegistrationFailurePopUp());
+                out.println(getAddressDeletionFailurePopUp());
             }
 
             out.flush();
@@ -104,7 +104,7 @@ public class AddressHandler extends HttpServlet {
     }
     
     private String getAddressRegistrationSuccessPopUp() {
-        String alertMessage = "주소록 등록이 성공했습니다.";
+        String alertMessage = "주소록 등록을 성공했습니다.";
         StringBuilder successPopUp = new StringBuilder();
         successPopUp.append("<html>");
         successPopUp.append("<head>");
@@ -126,6 +126,48 @@ public class AddressHandler extends HttpServlet {
 
     private String getAddressRegistrationFailurePopUp() {
         String alertMessage = "주소록 등록이 실패했습니다.";
+        StringBuilder successPopUp = new StringBuilder();
+        successPopUp.append("<html>");
+        successPopUp.append("<head>");
+
+        successPopUp.append("<title>주소록 등록 결과</title>");
+        successPopUp.append("<link type=\"text/css\" rel=\"stylesheet\" href=\"css/main_style.css\" />");
+        successPopUp.append("</head>");
+        successPopUp.append("<body onload=\"goMainMenu()\">");
+        successPopUp.append("<script type=\"text/javascript\">");
+        successPopUp.append("function goMainMenu() {");
+        successPopUp.append("alert(\"");
+        successPopUp.append(alertMessage);
+        successPopUp.append("\"); ");
+        successPopUp.append("window.location = \"address_book/address_book.jsp\"; ");
+        successPopUp.append("}  </script>");
+        successPopUp.append("</body></html>");
+        return successPopUp.toString();
+    }
+
+    private String getAddressDeletionSuccessPopUp() {
+        String alertMessage = "주소록 삭제가 성공했습니다.";
+        StringBuilder successPopUp = new StringBuilder();
+        successPopUp.append("<html>");
+        successPopUp.append("<head>");
+
+        successPopUp.append("<title>주소록 등록 결과</title>");
+        successPopUp.append("<link type=\"text/css\" rel=\"stylesheet\" href=\"css/main_style.css\" />");
+        successPopUp.append("</head>");
+        successPopUp.append("<body onload=\"goMainMenu()\">");
+        successPopUp.append("<script type=\"text/javascript\">");
+        successPopUp.append("function goMainMenu() {");
+        successPopUp.append("alert(\"");
+        successPopUp.append(alertMessage);
+        successPopUp.append("\"); ");
+        successPopUp.append("window.location = \"address_book/address_book.jsp\"; ");
+        successPopUp.append("}  </script>");
+        successPopUp.append("</body></html>");
+        return successPopUp.toString();
+    }
+
+    private String getAddressDeletionFailurePopUp() {
+        String alertMessage = "주소록 삭제가 실패했습니다.";
         StringBuilder successPopUp = new StringBuilder();
         successPopUp.append("<html>");
         successPopUp.append("<head>");
