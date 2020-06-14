@@ -35,8 +35,8 @@
         <tbody>
             <c:forEach var="row" items="${rs.rows}">
                 <tr>
-                    <td><a href="../write_mail.jsp?recv=${row.name}">${row.name}</td>
-                    <td><a href="../write_mail.jsp?recv=${row.email}">${row.email}</td>
+                    <td>${row.name}</td>
+                    <td><a href="../write_mail.jsp?recv=${row.email}@<%= session.getAttribute("host")%>">${row.email}</td>
                     <td>${row.phone}</td>
                 </tr>
             </c:forEach>
