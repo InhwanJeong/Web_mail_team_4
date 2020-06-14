@@ -1,7 +1,5 @@
 package cse.maven_webmail.model;
 
-import com.mysql.cj.xdevapi.Result;
-import cse.maven_webmail.control.SSHConnector;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -17,12 +15,10 @@ public class BookedMailExecutor implements Job {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        SSHConnector sshConnector = new SSHConnector();
-        sshConnector.tunneling();
         String JdbcDriver = "com.mysql.cj.jdbc.Driver";
-        String JdbcUrl = "jdbc:mysql://localhost:1234/webmail?serverTimezone=Asia/Seoul";
-        String User = "jdbc";
-        String Password = "1234";
+        String JdbcUrl = "jdbc:mysql://localhost:3306/webmail?serverTimezone=Asia/Seoul";
+        String User = "root";
+        String Password = "root";
         ArrayList<Integer> finish_list = new ArrayList<>();
         try {
             Class.forName(JdbcDriver);
@@ -71,6 +67,5 @@ public class BookedMailExecutor implements Job {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        sshConnector.closeSession();
     }
 }

@@ -5,12 +5,9 @@
 package cse.maven_webmail.model;
 
 import com.sun.mail.smtp.SMTPMessage;
-import cse.maven_webmail.control.SSHConnector;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Properties;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;

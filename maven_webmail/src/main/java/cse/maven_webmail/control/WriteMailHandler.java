@@ -81,12 +81,10 @@ public class WriteMailHandler extends HttpServlet {
         String fileName = parser.getFileName();
 
         if (!parser.getBookDate().equals("") || !parser.getBookTime().equals("")) { //예약된 메일일 경우
-            SSHConnector sshConnector = new SSHConnector();
-            sshConnector.tunneling();
             String JdbcDriver = "com.mysql.cj.jdbc.Driver";
-            String JdbcUrl = "jdbc:mysql://localhost:1234/webmail?serverTimezone=Asia/Seoul";
-            String User = "jdbc";
-            String Password = "1234";
+            String JdbcUrl = "jdbc:mysql://localhost:3306/webmail?serverTimezone=Asia/Seoul";
+            String User = "root";
+            String Password = "root";
 
             try {
                 InputStream fileStream = null;
@@ -117,7 +115,6 @@ public class WriteMailHandler extends HttpServlet {
 
                 if (pstmt.executeUpdate() >= 1) {
                     status = true;
-                    sshConnector.closeSession();
                     connection.close();
                 }
             } catch (ClassNotFoundException e) {

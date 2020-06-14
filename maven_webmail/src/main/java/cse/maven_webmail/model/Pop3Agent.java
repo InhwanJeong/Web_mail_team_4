@@ -5,8 +5,6 @@
  */
 package cse.maven_webmail.model;
 
-import cse.maven_webmail.control.SSHConnector;
-
 import java.util.Properties;
 import javax.mail.FetchProfile;
 import javax.mail.Flags;
