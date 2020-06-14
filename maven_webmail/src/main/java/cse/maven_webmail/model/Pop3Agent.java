@@ -12,14 +12,13 @@ import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.Session;
 import javax.mail.Store;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
+
 
 /**
  *
  * @author jongmin
  */
-public class Pop3Agent extends HttpServlet {
+public class Pop3Agent{
 
     private String host;
     private String userid;
