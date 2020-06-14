@@ -5,12 +5,22 @@
 package cse.maven_webmail.model;
 
 import cse.maven_webmail.control.CommandType;
+
 import javax.mail.Message;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
  * @author jongmin
  */
+
+/**
+ * @author taeyong
+ * getMessageTable 함수 63Line 메시지 필터링 실행. main_menu.jsp 페이지에서 dropdown 메뉴, 키워드를 읽어와 변수로 전달함.
+ * */
 public class MessageFormatter {
 
     private String userid;  // 파일 임시 저장 디렉토리 생성에 필요
@@ -19,8 +29,10 @@ public class MessageFormatter {
         this.userid = userid;
     }
 
-    public String getMessageTable(Message[] messages) {
+    public String getMessageTable(Message[] messages, String status, String keyword) {
         StringBuilder buffer = new StringBuilder();
+
+        List<MessageForm> messageForms = new ArrayList<>();
 
         // 메시지 제목 보여주기
         buffer.append("<table>");  // table start
@@ -32,24 +44,39 @@ public class MessageFormatter {
                 + " <th> 삭제 </td>   "
                 + " </tr>");
 
-        for (int i = messages.length - 1; i >= 0; i--) {
+        for (int i = 0 ; i <= messages.length - 1; i++) { // stream 정렬을 위해 List에 메시지 요소 삽입
             MessageParser parser = new MessageParser(messages[i], userid);
-            parser.parse(false);  // envelope 정보만 필요
-            // 메시지 헤더 포맷
-            // 추출한 정보를 출력 포맷 사용하여 스트링으로 만들기
+            List<String> messageList = new ArrayList<>();
+            parser.parse(true);  // LTY : 필터링을 위해 body도 파싱 해야 함
+            messageList.add(parser.getFromAddress());
+            messageList.add(parser.getSubject());
+            messageList.add(parser.getSentDate());
+            messageList.add(parser.getBody());
+            messageList.add(parser.getFileName());
+            messageList.add(Integer.toString(i + 1));
+
+            Collections.replaceAll(messageList, null, "");
+
+            messageForms.add(new MessageForm(messageList));
+        }
+
+
+        List<MessageForm> filteredMessage = filteringMessage(messageForms, status, keyword);
+        for (MessageForm message : filteredMessage) {
             buffer.append("<tr> "
-                    + " <td id=no>" + (i + 1) + " </td> "
-                    + " <td id=sender>" + parser.getFromAddress() + "</td>"
+                    + " <td id=no>" + message.getIndex() + " </td> "
+                    + " <td id=sender>" + message.getFromAddress() + "</td>"
                     + " <td id=subject> "
-                    + " <a href=show_message.jsp?msgid=" + (i + 1) + " title=\"메일 보기\"> "
-                    + parser.getSubject() + "</a> </td>"
-                    + " <td id=date>" + parser.getSentDate() + "</td>"
+                    + " <a href=show_message.jsp?msgid=" + message.getIndex() + " title=\"메일 보기\"> "
+                    + message.getSubject() + "</a> </td>"
+                    + " <td id=date>" + message.getSentDate() + "</td>"
                     + " <td id=delete>"
                     + "<a href=ReadMail.do?menu="
                     + CommandType.DELETE_MAIL_COMMAND
-                    + "&msgid=" + (i + 1) + "> 삭제 </a>" + "</td>"
+                    + "&msgid=" + message.getIndex() + "> 삭제 </a>" + "</td>"
                     + " </tr>");
         }
+
         buffer.append("</table>");
 
         return buffer.toString();
@@ -75,10 +102,28 @@ public class MessageFormatter {
             buffer.append("<br> <hr> 첨부파일: <a href=ReadMail.do?menu="
                     + CommandType.DOWNLOAD_COMMAND
                     + "&userid=" + this.userid
-                    + "&filename=" + attachedFile.replace(" ", "%20")
+                    + "&filename=" + attachedFile.replaceAll(" ", "%20")
                     + " target=_top> " + attachedFile + "</a> <br>");
         }
 
         return buffer.toString();
+    }
+
+    public List<MessageForm> filteringMessage(List<MessageForm> messages, String status, String keyword){
+        if (keyword.equals("") || keyword == "") return messages;
+        switch (status){
+            case "fromAddress":
+                return messages.stream().filter(messageForm -> messageForm.getFromAddress().contains(keyword)).sorted().collect(Collectors.toList());
+            case "sentDate":
+                return messages.stream().filter(messageForm -> messageForm.getSentDate().contains(keyword)).collect(Collectors.toList());
+            case "subject":
+                return messages.stream().filter(messageForm -> messageForm.getSubject().contains(keyword)).collect(Collectors.toList());
+            case "body":
+                return messages.stream().filter(messageForm -> messageForm.getBody().contains(keyword)).collect(Collectors.toList());
+            case "fileName":
+                return messages.stream().filter(messageForm -> messageForm.getFileName().contains(keyword)).collect(Collectors.toList());
+            default:
+                return messages;
+        }
     }
 }

@@ -4,14 +4,14 @@
  */
 package cse.maven_webmail.model;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import javax.activation.DataHandler;
 import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.Multipart;
 import javax.mail.Part;
 import javax.mail.internet.MimeUtility;
+import java.io.File;
+import java.io.FileOutputStream;
 
 /**
  *

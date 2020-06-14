@@ -12,12 +12,14 @@ import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.Session;
 import javax.mail.Store;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
  * @author jongmin
  */
-public class Pop3Agent {
+public class Pop3Agent extends HttpServlet {
 
     private String host;
     private String userid;
@@ -26,7 +28,6 @@ public class Pop3Agent {
     private Store store;
 
     private String exceptionType;
-
 
     public Pop3Agent() {
     }
@@ -84,8 +85,10 @@ public class Pop3Agent {
     /*
      * 페이지 단위로 메일 목록을 보여주어야 함.
      */
-    public String getMessageList() {
+    public String getMessageList(String status, String keyword) {
         String result = "";
+        if (status == null) status = "";
+        if (keyword == null) keyword = "";
         Message[] messages = null;
 
         if (!connectToStore()) {  // 3.1
@@ -106,14 +109,16 @@ public class Pop3Agent {
             folder.fetch(messages, fp);
 
             MessageFormatter formatter = new MessageFormatter(userid);  //3.5
-            result = formatter.getMessageTable(messages);   // 3.6
+            result = formatter.getMessageTable(messages, status, keyword);   // 3.6
 
             folder.close(true);  // 3.7
             store.close();       // 3.8
+            return result;
+
         } catch (Exception ex) {
             System.out.println("Pop3Agent.getMessageList() : exception = " + ex);
+            ex.printStackTrace();
             result = "Pop3Agent.getMessageList() : exception = " + ex;
-        } finally {
             return result;
         }
     }
@@ -150,9 +155,8 @@ public class Pop3Agent {
         Properties props = System.getProperties();
         props.setProperty("mail.pop3.host", host);
         props.setProperty("mail.pop3.user", userid);
-        props.setProperty("mail.pop3.apop.enable", "false");
-        props.setProperty("mail.pop3.disablecapa", "true");  // 200102 LJM - added cf. https://javaee.github.io/javamail/docs/api/com/sun/mail/pop3/package-summary.html
-        props.setProperty("mail.debug", "false");
+        props.setProperty("mail.pop3.apop.enable", "true");
+        props.setProperty("mail.debug", "true");
 
         Session session = Session.getInstance(props);
         session.setDebug(false);
