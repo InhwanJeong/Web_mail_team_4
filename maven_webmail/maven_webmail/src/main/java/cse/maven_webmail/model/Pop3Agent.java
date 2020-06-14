@@ -113,10 +113,11 @@ public class Pop3Agent extends HttpServlet {
 
             folder.close(true);  // 3.7
             store.close();       // 3.8
+            return result;
+
         } catch (Exception ex) {
             System.out.println("Pop3Agent.getMessageList() : exception = " + ex);
             result = "Pop3Agent.getMessageList() : exception = " + ex;
-        } finally {
             return result;
         }
     }

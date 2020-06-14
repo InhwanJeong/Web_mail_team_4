@@ -49,10 +49,9 @@
             <select id="status" name="status">
                 <option value="None" selected>필터링 X</option>
                 <option value="fromAddress">발신인</option>
-                <option value="toAddress">수신인</option>
-                <option value="ccAddress">참조인</option>
+                <option value="subject">제목</option>
                 <option value="sentDate">특정 날짜</option>
-                <option value="body" >내용</option>
+                <option value="body">내용</option>
                 <option value="fileName">파일 이름</option>
             </select>
 
@@ -60,14 +59,12 @@
             <input type="submit">
         </form>
 
-
-
-
         <div id="main">
             <%
                 String status = request.getParameter("status");
                 String keyword = request.getParameter("keyword");
-                pop3.getMessageList(status, keyword);
+
+                out.print(pop3.getMessageList(status, keyword));
             %>
         </div>
 

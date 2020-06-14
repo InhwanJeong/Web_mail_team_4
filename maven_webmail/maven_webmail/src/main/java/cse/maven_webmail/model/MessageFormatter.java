@@ -49,12 +49,13 @@ public class MessageFormatter {
             parser.parse(false);  // envelope 정보만 필요
 
             messageList.add(parser.getFromAddress());
-            messageList.add(parser.getToAddress());
-            messageList.add(parser.getCcAddress());
-            messageList.add(parser.getSentDate());
             messageList.add(parser.getSubject());
+            messageList.add(parser.getSentDate());
             messageList.add(parser.getBody());
             messageList.add(parser.getFileName());
+
+            for(String str : messageList)
+                System.out.println(str);
 
             messageForms.add(new MessageForm(messageList));
         }
@@ -112,14 +113,10 @@ public class MessageFormatter {
     }
 
     public List<MessageForm> filteringMessage(List<MessageForm> messages, String status, String keyword){
+        if (keyword.equals("") || keyword == "") return messages;
         switch (status){
             case "FromAddress":
-                // filteredMessage.stream().sorted(filteredMessage.forEach(messageForm -> messageForm.getSentDate());)
                 return messages.stream().filter(messageForm -> messageForm.getFromAddress().contains(keyword)).sorted().collect(Collectors.toList());
-            case "toAddress":
-                return messages.stream().filter(messageForm -> messageForm.getToAddress().contains(keyword)).collect(Collectors.toList());
-            case "ccAddress":
-                return messages.stream().filter(messageForm -> messageForm.getCcAddress().contains(keyword)).collect(Collectors.toList());
             case "sentDate":
                 return messages.stream().filter(messageForm -> messageForm.getSentDate().contains(keyword)).collect(Collectors.toList());
             case "subject":
