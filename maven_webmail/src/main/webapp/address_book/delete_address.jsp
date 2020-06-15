@@ -27,7 +27,7 @@
                 <table border="0" align="left">
                     <tr>
                         <td>이름</td>
-                        <td> <input type="text" name="name" value="" size="20" />  </td>
+                        <td> <input type="text" name="name" value="" size="20" required/>  </td>
                     </tr>
                     <tr>
                         <td colspan="2">

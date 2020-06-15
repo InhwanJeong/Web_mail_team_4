@@ -32,7 +32,7 @@
             <jsp:include page="address_book_sidebar_menu.jsp" />
         </div>
 
-        <addrtags:address_book user="webmail" password="2007"
+        <addrtags:address_book user="root" password="1234"
                                schema="webmail" table="db"/>
 
         <jsp:include page="../footer.jsp" />

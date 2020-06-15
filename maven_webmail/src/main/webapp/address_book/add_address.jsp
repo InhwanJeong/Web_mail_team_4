@@ -29,15 +29,15 @@
                 <table border="0" align="left">
                     <tr>
                         <td>이름</td>
-                        <td> <input type="text" name="name" value="" size="20" />  </td>
+                        <td> <input type="text" name="name" value="" size="20" required/>  </td>
                     </tr>
                     <tr>
                         <td>이메일주소 </td>
-                        <td> <input type="text" name="email" value="" /> </td>
+                        <td> <input type="text" name="email" value="" required/> </td>
                     </tr>
                     <tr>
                         <td>전화번호 </td>
-                        <td> <input type="text" name="phone" value="" /> </td>
+                        <td> <input type="text" name="phone" value="" required/> </td>
                     </tr>
                     <tr>
                         <td colspan="2">

@@ -31,7 +31,7 @@
                 <table>
                     <tr>
                         <td> 수신 </td>
-                        <td> <input type="text" name="to" size="80"
+                        <td> <input type="text" name="to" required size="80"
                                     value=<%=request.getParameter("recv") == null ? "" : request.getParameter("recv")%>>  </td>
                     </tr>
                     <tr>
@@ -44,7 +44,7 @@
                     </tr>
                     <tr>
                         <td> 메일 제목 </td>
-                        <td> <input type="text" name="subj" size="80"  >  </td>
+                        <td> <input type="text" name="subj" size="80" required >  </td>
                     </tr>
                     <tr>
                         <td colspan="2">본  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 문</td>
